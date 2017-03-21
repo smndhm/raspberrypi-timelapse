@@ -15,7 +15,7 @@ usb_folder = False
 camera = picamera.PiCamera()
 camera.resolution = (1640, 1232)
 #extra camera setting
-# camera.resolution = camera.MAX_RESOLUTION
+#camera.resolution = camera.MAX_RESOLUTION
 #camera.hflip = True
 #camera.vflip = True
 #camera.rotation = 90
@@ -27,9 +27,9 @@ if len(sys.argv) > 1:
 	duration = duration_default if len(sys.argv) <= 3 else sys.argv[3]
 	usb_folder  = False if len(sys.argv) <= 4 or not os.path.isdir('/media/usb/' + sys.argv[4]) else True
 else:
-	project  = raw_input("Nom du projet : ")
-	interval = input("Prendre des photos toutes les combiens de secondes ? ")
-	duration = input("Pendant combien de minutes ? ")
+	project  = raw_input("Project name: ")
+	interval = input("Picture interval: ")
+	duration = input("Timelapse length: ")
 
 #make
 if usb_folder:
