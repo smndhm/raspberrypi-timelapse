@@ -13,10 +13,12 @@ usb_folder = False
 
 #init camera
 camera = picamera.PiCamera()
-# camera.resolution = camera.MAX_RESOLUTION
 camera.resolution = (1640, 1232)
-camera.hflip = True
-camera.vflip = True
+#extra camera setting
+# camera.resolution = camera.MAX_RESOLUTION
+#camera.hflip = True
+#camera.vflip = True
+#camera.rotation = 90
 
 #check arguments
 if len(sys.argv) > 1:
