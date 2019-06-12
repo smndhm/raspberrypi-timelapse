@@ -1,1 +1,1 @@
-# raspberrypi-timelapse
+# rpi-timelapse
