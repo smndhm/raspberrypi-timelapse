@@ -1,54 +1,77 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
-from time import sleep
-from datetime import datetime, timedelta
+#imports
 import sys
 import os
-import picamera
 
-#default
-interval_default = 10
-duration_default = 60
-usb_folder = False
+import pygame
+import pygame.camera
+from pygame.locals import *
 
-#init camera
-camera = picamera.PiCamera()
-camera.resolution = (1640, 1232)
-#extra camera setting
-#camera.resolution = camera.MAX_RESOLUTION
-#camera.hflip = True
-#camera.vflip = True
-#camera.rotation = 90
 
-#check arguments
-if len(sys.argv) > 1:
-	project  = sys.argv[1]
-	interval = interval_default if len(sys.argv) <= 2 else sys.argv[2]
-	duration = duration_default if len(sys.argv) <= 3 else sys.argv[3]
-	usb_folder  = False if len(sys.argv) <= 4 or not os.path.isdir('/media/usb/' + sys.argv[4]) else True
-else:
-	project  = raw_input("Project name: ")
-	interval = input("Picture interval: ")
-	duration = input("Timelapse length: ")
+#init Pygame
+print('Init Pygame...')
+pygame.init()
+pygame.mouse.set_visible(0)
 
-#make
-if usb_folder:
-	path = '/media/usb/' + sys.argv[4] + '/' + project + '/'
-else:
-	path = os.path.dirname(os.path.realpath(__file__)) + '/' + project + '/'
+#init Font
+print('Init Font...')
+pygame.font.init()
+font=pygame.font.Font(os.path.join("assets", "fonts", 'LSLT-Regular.ttf'), 200)
 
-if not os.path.isdir(path):
-	os.makedirs(path)
-	os.chmod(path, 0777)
+#init Camera
+# print('Init camera...')
+# camera_resolution_width=1920
+# camera_resolution_height=1200
+# camera_resolution=(camera_resolution_width, camera_resolution_height)
 
-print "camera warm-up..."
-sleep(2)
+# camera_rotation=90
 
-timestamp = datetime.now()
-timestamp_end = timestamp + timedelta(seconds=(int(duration) * 60))
+# pygame.camera.init()
+# cameras=pygame.camera.list_cameras()
+# if len(cameras) == 0:
+#   sys.exit("No camera")
+# camera=pygame.camera.Camera(cameras[0], camera_resolution, "RGB")
+# print(cameras[0], camera_resolution, camera_rotation)
 
-for filename in camera.capture_continuous(path + '{counter:04d}.jpg'):
-	print('Captured %s' % filename)
-	timestamp = timestamp + timedelta(seconds=int(interval))
-	wait = timestamp - datetime.now()
-	sleep(wait.seconds + wait.microseconds/1E6)
+# camera.start()
+
+
+#init Screen
+print('Init screen...')
+# screen_resolution=(camera_resolution_width/2, camera_resolution_height/2)
+# screen=pygame.display.set_mode(screen_resolution, pygame.FULLSCREEN)
+# print(screen_resolution)
+
+#display camera on screen
+# camera_image=pygame.surface.Surface(camera_resolution)
+# screen_image=pygame.surface.Surface(screen_resolution)
+
+# while True:
+#   if camera.query_image():
+#     camera_image=camera.get_image(camera_image)
+#   screen_image=pygame.transform.scale(camera_image, screen_resolution, screen_image)
+#   screen.blit(pygame.transform.rotate(camera_image, camera_rotation), (0,0))
+#   pygame.display.flip()
+
+#init buttons
+
+#home
+
+clock = pygame.time.Clock()
+
+default_screen_resolution=(1000, 1000)
+screen = pygame.display.set_mode(default_screen_resolution, pygame.FULLSCREEN)
+
+text=font.render("PRESS TO START", True, [255, 255, 255])
+textrect = text.get_rect()
+textrect.centerx = screen.get_rect().centerx
+textrect.centery = screen.get_rect().centery
+
+screen.fill((0, 0, 0))
+screen.blit(text, textrect)
+
+pygame.display.update()
+
+while True:
+	clock.tick(20)
