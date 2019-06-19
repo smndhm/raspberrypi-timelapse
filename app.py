@@ -4,7 +4,7 @@
 import sys
 import os
 
-import RPi.GPIO as GPIO
+from gpiozero import Button
 
 import pygame
 import pygame.camera
@@ -16,25 +16,19 @@ print dirname
 
 # Init GPIO
 print('Init GPIO...')
-GPIO.setmode(GPIO.BCM)
-gpioButtons = {
-	21:'Button 1/GPIO',
-	20:'Button 2/GPIO',
-	16:'Button 3/GPIO',
-	6:'Joystick Up',
-	19:'Joystick Down',
-	5:'Joystick Left',
-	26:'Joystick Right',
-	13:'Joystick Press'
-}
-for i in gpioButtons.keys():
- GPIO.setup(i, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-
+btnKey1 = Button(21)
+btnKey2 = Button(20)
+btnKey3 = Button(16)
+btnJoystickUp = Button(6)
+btnJoystickDown = Button(19)
+btnJoystickleft = Button(5)
+btnJoystickRight = Button(26)
+btnJoystickPress = Button(13)
 
 # Init Pygame
 print('Init Pygame...')
 pygame.init()
-# pygame.mouse.set_visible(0)
+pygame.mouse.set_visible(0)
 
 # Init Font
 print('Init Font...')
@@ -76,25 +70,33 @@ font = pygame.font.Font(os.path.join(dirname, 'assets/fonts/LSLT-Regular.ttf'), 
 #  screen.blit(pygame.transform.rotate(camera_image, camera_rotation), (0,0))
 #  pygame.display.flip()
 
-#home
+# Colors
+colors = {
+	'white':(255,255,255), 
+	'black':(0,0,0)
+}
+
+def say_hello():
+    print("Hello!")
+
+# home
+print('Starting...')
 
 clock = pygame.time.Clock()
 
 default_screen_resolution = (1000, 1000)
 screen = pygame.display.set_mode(default_screen_resolution, pygame.FULLSCREEN)
 
-text = font.render("PRESS TO START", True, [255, 255, 255])
+text = font.render("PRESS TO START", True, colors['white'])
 textrect = text.get_rect()
 textrect.centerx = screen.get_rect().centerx
 textrect.centery = screen.get_rect().centery
 
-screen.fill((0, 0, 0))
+screen.fill(colors['black'])
 screen.blit(text, textrect)
 
 pygame.display.update()
 
 while True:
 	clock.tick(20)
-	for (k,v) in gpioButtons.items():
-		if GPIO.input(k) == False:
-			print v
+	btnKey1.when_pressed = say_hello
