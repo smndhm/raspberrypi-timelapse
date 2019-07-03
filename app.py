@@ -10,9 +10,64 @@ import pygame
 import pygame.camera
 from pygame.locals import *
 
-# 
+## ----------------------------------------------------------------------------------------------------
+## Class Screen
+## ----------------------------------------------------------------------------------------------------
+class Screen():
+	#__init__
+	def __init__(self):
+		self.colors = {
+			'white':(255,255,255), 
+			'black':(0,0,0)
+		}	
+		self.default_screen_resolution = (1000, 1000)
+		self.screen = pygame.display.set_mode(self.default_screen_resolution)
+		self.home()
+
+	# setBackgroundColor
+	def setBackgroundColor(self, color):
+		self.background = pygame.Surface(self.screen.get_size())
+		self.background = self.background.convert()
+		self.background.fill(color)
+		self.screen.blit(self.background, (0, 0))
+
+	def home(self):
+		# Background
+		self.setBackgroundColor(self.colors['black'])
+		# Text
+		text = font.render("PRESS TO START", True, self.colors['white'])
+		textrect = text.get_rect()
+		textrect.centerx = self.screen.get_rect().centerx
+		textrect.centery = self.screen.get_rect().centery
+		self.screen.blit(text, textrect)
+		# update screen
+		pygame.display.flip()
+		# Buttons
+		btnKey1.when_pressed = self.pictureInterval
+		btnKey2.when_pressed = self.pictureInterval
+		btnKey3.when_pressed = self.pictureInterval
+		btnJoystickUp.when_pressed = self.pictureInterval
+		btnJoystickDown.when_pressed = self.pictureInterval
+		btnJoystickleft.when_pressed = self.pictureInterval
+		btnJoystickRight.when_pressed = self.pictureInterval
+		btnJoystickPress.when_pressed = self.pictureInterval
+
+	def pictureInterval(self):
+		# Background
+		self.setBackgroundColor(self.colors['white'])
+		# Text
+		
+		# update screen
+		pygame.display.flip()
+		# Buttons
+
+## ----------------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------
+## ----------------------------------------------------------------------------------------------------
+
+# Dirname
 dirname = os.path.dirname(os.path.realpath(__file__))
-print dirname
+print('dirname', dirname)
 
 # Init GPIO
 print('Init GPIO...')
@@ -69,34 +124,11 @@ font = pygame.font.Font(os.path.join(dirname, 'assets/fonts/LSLT-Regular.ttf'), 
 #  screen_image = pygame.transform.scale(camera_image, screen_resolution, screen_image)
 #  screen.blit(pygame.transform.rotate(camera_image, camera_rotation), (0,0))
 #  pygame.display.flip()
-
-# Colors
-colors = {
-	'white':(255,255,255), 
-	'black':(0,0,0)
-}
-
-def say_hello():
-    print("Hello!")
-
 # home
 print('Starting...')
+screen = Screen()
 
 clock = pygame.time.Clock()
 
-default_screen_resolution = (1000, 1000)
-screen = pygame.display.set_mode(default_screen_resolution, pygame.FULLSCREEN)
-
-text = font.render("PRESS TO START", True, colors['white'])
-textrect = text.get_rect()
-textrect.centerx = screen.get_rect().centerx
-textrect.centery = screen.get_rect().centery
-
-screen.fill(colors['black'])
-screen.blit(text, textrect)
-
-pygame.display.update()
-
 while True:
 	clock.tick(20)
-	btnKey1.when_pressed = say_hello
